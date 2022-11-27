@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { useShaka } from './Shaka/useShaka'
 
-function App() {
+export default function App() {
+  const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd'
+  const { videoRef } = useShaka( manifestUri )
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <video 
+        ref={videoRef}
+        width="100%"
+        poster="//shaka-player-demo.appspot.com/assets/poster.jpg"
+        controls 
+        autoPlay 
+      />
     </div>
-  );
+  )
 }
 
-export default App;
