@@ -1,8 +1,22 @@
-import { useEffect, useRef } from "react"
-import shaka from 'shaka-player/dist/shaka-player.compiled'
+// @ts-check
 
+/**
+ * For Shaka typescript checking, I have to manually modify d.ts file from shaka-player in node_modules,
+ * adding 'export default shaka;' to the end of the file
+ * node_modules/shaka-player/dist/shaka-player.compiled.d.ts
+ * */
+// import { shaka } from 'shaka-player/dist/shaka-player.compiled'
+import shaka from 'shaka-player'
+
+import { useEffect, useRef } from "react"
+
+/** @param {string} manifestUri */
 export function useShaka( manifestUri ) {
+
+  /** @type {React.MutableRefObject<HTMLMediaElement | null>} */
   const videoRef = useRef(null)
+
+  /** @type {React.MutableRefObject<shaka.Player | null>} */
   const playerRef = useRef(null)
   
   useEffect(() => {
@@ -23,7 +37,8 @@ export function useShaka( manifestUri ) {
       // Create a Player instance.
       playerRef.current = new shaka.Player(videoRef.current)
       // Attach player to the window to make it easy to access in the JS console.
-      window.player = playerRef
+      // @ts-ignore
+      window.player = playerRef.current 
       // Listen for error events.
       playerRef.current.addEventListener('error', onErrorEvent)
       // Try to load a manifest.
@@ -56,7 +71,7 @@ export function useShaka( manifestUri ) {
         playerRef.current.destroy()
       }
     }
-    
+
   }, [manifestUri])
 
   return { videoRef }
